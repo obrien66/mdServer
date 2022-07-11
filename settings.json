@@ -4,6 +4,7 @@
 	"siteDir": "site",
 	"encoding": "utf8",
 	"headfile": "head.html",
-	"footfile": "foot.html"
+	"footfile": "foot.html",
+	"endTags": ["<html>", "</html>"]
 
 }

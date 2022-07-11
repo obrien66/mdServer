@@ -8,28 +8,47 @@ const mustache = require("mustache");
 const settings = require("./settings.json");
 
 var bookend = [settings.headfile, settings.footfile];
-var endTags = ["<html>", "</html>"]
+var endTags = settings.endTags
 
+// function for adding html tags + header and footer
 var buildSite = (tags, ends, md) => {
 	return tags[0] + ends[0] + md + tags[1] + ends[1]
 }
 
+var endFileData = [];
+// iterate over the array and read each file
+for (var i = 0; i < bookend.length; i++) {
+	// make a usable file path using settings and items from the array
+	let bookendFile = `./${settings.siteDir}/${bookend[i]}`;
+	// read file
+	fs.readFile(bookendFile, settings.encoding, (err, data) => {
+		if (err) {
+			throw err
+		}
+		else {
+			// read it and add that part to the array
+			endFileData.push(data);
+		}
+	});
+}
+
 var server = http.createServer((req, res) => {
-	let endFileData = [];
-	// iterate over the array and read each file
-	for (var i = 0; i < bookend.length; i++) {
-		// make a usable file path using settings and items from the array
-		let bookendFile = `./${settings.siteDir}/${bookend[i]}`;
-		fs.readFile(bookendFile, settings.encoding, (err, data) => {
-			if (err) {
-				throw err
-			}
-			else {
-				// read it and add that part to the array
-				endFileData.push(data);
-			}
-		});
-	}
+	// var endFileData = [];
+	// // iterate over the array and read each file
+	// for (var i = 0; i < bookend.length; i++) {
+	// 	// make a usable file path using settings and items from the array
+	// 	let bookendFile = `./${settings.siteDir}/${bookend[i]}`;
+	// 	fs.readFile(bookendFile, settings.encoding, (err, data) => {
+	// 		if (err) {
+	// 			throw err
+	// 		}
+	// 		else {
+	// 			// read it and add that part to the array
+	// 			endFileData.push(data);
+	// 		}
+	// 	});
+	// }
+
 	// use the data we get from settings at the requested url to make a filename we can use
 	let file;
 	if (req.url[req.url.length - 1] === "/"){
@@ -47,6 +66,7 @@ var server = http.createServer((req, res) => {
 		// console.log(endFileData);
 		if (err) {
 			// what are you looking for????
+			// console.log(endTags, endFileData)
 			res.writeHead(404, {"Content-Type": "text/html"});
 			res.end(buildSite(endTags, endFileData, `Sorry boss, ${file} machine broke`));
 			console.log(colour.red("404 " ) + file);
