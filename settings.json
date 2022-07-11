@@ -1,0 +1,7 @@
+{
+	"port": 8000,
+	"indexFileName": "index.md",
+	"siteDir": "site",
+	"encoding": "utf8"
+
+}
