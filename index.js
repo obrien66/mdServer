@@ -13,12 +13,12 @@ var server = http.createServer((req, res) => {
 		file = `./${settings.siteDir}${req.url}${settings.indexFileName}`;
 	}
 	else {
-		file = `./${settings.sitDir}${req.url}`
+		file = `./${settings.siteDir}${req.url}`
 	}
 	fs.readFile(file, settings.encoding, (err, data) => {
 		if (err) {
 			res.writeHead(404, {"Content-Type": "text/html"});
-			res.end("whoopsie daisy");
+			res.end(`Sorry boss, ${file} machine broke`);
 		}
 		else {
 			res.writeHead(200, {"Content-Type": "text/html"});
