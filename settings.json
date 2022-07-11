@@ -2,6 +2,8 @@
 	"port": 8000,
 	"indexFileName": "index.md",
 	"siteDir": "site",
-	"encoding": "utf8"
+	"encoding": "utf8",
+	"headfile": "head.html",
+	"footfile": "foot.html"
 
 }
